@@ -13,6 +13,5 @@ public class OrderService {
     public synchronized void adicionar(Order o){ fila.add(o); }
     public synchronized List<Order> listar(){ return new ArrayList<>(fila); }
     public synchronized void limpar(){ fila.clear(); }
-    public synchronized boolean vazia(){ return fila.isEmpty(); }
 }
 

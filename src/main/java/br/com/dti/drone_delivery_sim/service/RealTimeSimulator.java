@@ -18,11 +18,9 @@ import java.util.stream.Collectors;
 @Service
 public class RealTimeSimulator {
 
-    // ---------- Já existia (dashboard) ----------
     private List<Delivery> ultimoPlano = new ArrayList<>();
     private List<Order> pedidosUsados = new ArrayList<>();
 
-    // ---------- Novo (tempo real) ----------
     private final DroneService drones;
     private final Map<String, Deque<Missao>> filasPorDrone = new LinkedHashMap<>();
     private final Map<String, Telemetria> telemetrias = new LinkedHashMap<>();
@@ -31,7 +29,6 @@ public class RealTimeSimulator {
     private ScheduledExecutorService scheduler;
     private long tickMillis = 1000L; // default 1s em modo AUTO
 
-    // parâmetros simples de simulação
     private static final double VELOCIDADE_MIN_KMH = 1.0; // evita zero
     private static final int PAUSA_ENTREGA_SEC = 10;      // tempo parado em "DELIVERING"
     private static final int PAUSA_RECARGA_SEC = 20;      // tempo parado em "CHARGING" em pit-stop
@@ -41,7 +38,6 @@ public class RealTimeSimulator {
         this.drones = drones;
     }
 
-    // ---------- Compat original ----------
     public void registrarPlano(List<Delivery> entregas, List<Order> pedidos) {
         this.ultimoPlano = new ArrayList<>(entregas);
         this.pedidosUsados = new ArrayList<>(pedidos);
@@ -87,8 +83,6 @@ public class RealTimeSimulator {
         for (char[] row : g) sb.append(row).append('\n');
         return sb.toString();
     }
-
-    // ---------- NOVO: fila e tick ----------
 
     /** Converte o último plano registrado em filas de missões (um deque por drone). */
     public synchronized void carregarPlanoComoMissoesDoUltimoPlano() {
@@ -155,7 +149,7 @@ public class RealTimeSimulator {
         for (String id : telemetrias.keySet()) {
             var tel = telemetrias.get(id);
             var dOpt = drones.buscar(id);
-            if (dOpt.isEmpty()) continue; // drone removido por CRUD
+            if (dOpt.isEmpty()) continue;
             Drone drone = dOpt.get();
 
             if (!tel.emMissao) continue;
@@ -322,7 +316,7 @@ public class RealTimeSimulator {
             for (long pid : pedidosIds) {
                 // nota: precisamos de pedidosUsados (do último plano) para achar coords; fallback: ignora
             }
-            // solução prática: qualquer waypoint != base e != canto de obstáculo vai disparar DELIVERING
+
             // Como heurística simples para MVP: se não for (0,0), consideramos entrega
             // e evitamos em sequência usando a pausa curta de entrega.
             return !(Math.abs(p[0]) < 1e-9 && Math.abs(p[1]) < 1e-9);

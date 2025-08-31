@@ -16,7 +16,6 @@ public class SimulationController {
         this.sim = sim;
     }
 
-    /** Usa o último plano registrado (depois do /plan) e cria filas de missões por drone. */
     @PostMapping("/queue-last-plan")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void queueLastPlan() { sim.carregarPlanoComoMissoesDoUltimoPlano(); }

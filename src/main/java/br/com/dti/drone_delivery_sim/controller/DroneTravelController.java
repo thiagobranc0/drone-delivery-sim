@@ -49,8 +49,10 @@ public class DroneTravelController {
                               @RequestParam double x2, @RequestParam double y2){
         rotas.adicionarZona(new NoFlyZone(x1,y1,x2,y2));
     }
+
     @GetMapping("/obstacles")
     public List<NoFlyZone> listarZonas(){ return rotas.listarZonas(); }
+
     @DeleteMapping("/obstacles")
     public void limparZonas(){ rotas.limparZonas(); }
 

@@ -12,7 +12,6 @@ public class RouteCalculator {
 
     private final List<NoFlyZone> zonas = new ArrayList<>();
 
-    public void definirZonas(List<NoFlyZone> novas){ zonas.clear(); if (novas != null) zonas.addAll(novas); }
     public List<NoFlyZone> listarZonas(){ return new ArrayList<>(zonas); }
     public void limparZonas(){ zonas.clear(); }
     public void adicionarZona(NoFlyZone z){ zonas.add(z); }

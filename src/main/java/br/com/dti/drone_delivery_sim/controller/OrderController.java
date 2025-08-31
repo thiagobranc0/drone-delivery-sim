@@ -4,6 +4,7 @@ import br.com.dti.drone_delivery_sim.dto.OrderDTO;
 import br.com.dti.drone_delivery_sim.model.Order;
 import br.com.dti.drone_delivery_sim.service.OrderService;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,19 +16,26 @@ public class OrderController {
 
     private final OrderService pedidos;
 
-    public OrderController(OrderService pedidos) { this.pedidos = pedidos; }
+    public OrderController(OrderService pedidos) {
+        this.pedidos = pedidos;
+    }
 
     @PostMapping
-    public ResponseEntity<Long> criar(@Valid @RequestBody OrderDTO req){
+    public ResponseEntity<Order> criar(@Valid @RequestBody OrderDTO req) {
         Order p = new Order(req.x(), req.y(), req.pesoKg(), req.prioridade());
         pedidos.adicionar(p);
-        return ResponseEntity.ok(p.getId());
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(p);
     }
 
     @GetMapping
-    public List<Order> listar(){ return pedidos.listar(); }
+    public List<Order> listar() {
+        return pedidos.listar();
+    }
 
     @DeleteMapping
-    public void limpar(){ pedidos.limpar(); }
+    public ResponseEntity<Void> limpar() {
+        pedidos.limpar();
+        return ResponseEntity.noContent().build();
+    }
 }
-
