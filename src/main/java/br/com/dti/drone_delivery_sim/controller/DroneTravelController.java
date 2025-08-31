@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.*;
 
 @RestController
-public class RealTimeController {
+public class DroneTravelController {
 
     private final OrderService pedidos;
     private final DroneService drones;
@@ -18,8 +18,8 @@ public class RealTimeController {
     private final RealTimeSimulator tempoReal;
     private final RouteCalculator rotas;
 
-    public RealTimeController(OrderService pedidos, DroneService drones, DeliveryOptimizer otimizador,
-                              RealTimeSimulator tempoReal, RouteCalculator rotas) {
+    public DroneTravelController(OrderService pedidos, DroneService drones, DeliveryOptimizer otimizador,
+                                 RealTimeSimulator tempoReal, RouteCalculator rotas) {
         this.pedidos = pedidos; this.drones = drones; this.otimizador = otimizador;
         this.tempoReal = tempoReal; this.rotas = rotas;
     }
@@ -44,7 +44,6 @@ public class RealTimeController {
     @GetMapping("/dashboard")
     public RealTimeSimulator.Relatorio dashboard(){ return tempoReal.gerarRelatorio(); }
 
-    // No-fly zones
     @PostMapping("/obstacles")
     public void adicionarZona(@RequestParam double x1, @RequestParam double y1,
                               @RequestParam double x2, @RequestParam double y2){
